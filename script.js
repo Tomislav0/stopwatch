@@ -9,6 +9,7 @@ const alarmSound = document.getElementById('alarmSound');
 const wallElement = document.getElementById('wall');
 
 const titleElement = document.getElementById('title');
+const headTitleElement = document.getElementById('headTitle');
 
 let workTime = 50 * 60; // 50 minutes in seconds
 let breakTime = 10 * 60; // 10 minutes in seconds
@@ -26,6 +27,8 @@ const formatTime = (seconds) => {
 
 const updateTimerDisplay = () => {
     timerElement.textContent = formatTime(timeLeft);
+
+    headTitleElement.textContent = formatTime(timeLeft).toString() + (isBreak ? ' - Break' : ' - Working');
 };
 
 const pauseTimer = () => {
