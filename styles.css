@@ -16,12 +16,28 @@ body {
 }
 
 header {
-    font-family: "Rubik Mono One", monospace;
+    font-family: "Kumbh Sans", sans-serif;
     font-weight: 400;
     font-style: normal;
     text-align: center;
+    display: flex;
+    justify-content: space-between;
+}
+header h1{
+    
+    text-align: left;
+    margin-left: 80px;
+    margin-bottom: 0;
 }
 
+#toggle-chat{
+    margin-right:50px;
+    margin-top: 21.44px;
+}
+#live{
+    text-align: left;
+    margin-left: 80px;
+}
 footer {
     background-color: #f4f4f4;
     position: absolute;
@@ -187,6 +203,78 @@ div.message:last-child {
     display: none;
 }
 
+#live{
+    display: flex;
+}
+
+#userCount{
+    margin-top: 2px;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    max-width: 500px;
+    margin: auto;
+    width: 80%;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+#settingsForm label {
+    display: block;
+    margin: 10px 0 5px;
+}
+
+#settingsForm input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 15px;
+    box-sizing: border-box;
+}
+
+#settingsForm button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#settingsForm button:hover {
+    background-color: #45a049;
+}
+
 @media (max-width: 1000px) {
     .container {
         flex-direction: column-reverse;
@@ -208,4 +296,11 @@ div.message:last-child {
     .main-container{
         margin-top: 50px;
     }
+
+}
+@media (max-width: 500px) {
+    #toggle-chat{
+        margin-right: 0;
+    }
+
 }

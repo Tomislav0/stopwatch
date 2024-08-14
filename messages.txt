@@ -27,3 +27,8 @@
 <div style="text-align: left"><span class="message-username"> SneakyNinja</span>: <span class="message-text"> hahahha</span></div><span class="timestamp">15:58, 14.08.2024</span> 
 <div style="text-align: left"><span class="message-username"> SneakyNinja</span>: <span class="message-text"> lol</span></div><span class="timestamp">15:58, 14.08.2024</span> 
 <div style="text-align: left"><span class="message-username"> SneakyNinja</span>: <span class="message-text"> haha</span></div><span class="timestamp">16:13, 14.08.2024</span> 
+<div style="text-align: left"><span class="message-username"> SneakyNinja</span>: <span class="message-text"> 12</span></div><span class="timestamp">21:25, 14.08.2024</span> 
+<div style="text-align: left"><span class="message-username"> Tomi</span>: <span class="message-text"> jaaa</span></div><span class="timestamp">22:29, 14.08.2024</span> 
+<div style="text-align: left"><span class="message-username"> Tomi</span>: <span class="message-text"> ja jedem ćevape</span></div><span class="timestamp">22:42, 14.08.2024</span> 
+<div style="text-align: left"><span class="message-username"> MysteriousCat</span>: <span class="message-text"> eee</span></div><span class="timestamp">22:42, 14.08.2024</span> 
+<div style="text-align: left"><span class="message-username"> MysteriousCat</span>: <span class="message-text"> ja volim isto ćevape</span></div><span class="timestamp">22:42, 14.08.2024</span> 

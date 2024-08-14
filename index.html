@@ -15,38 +15,86 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Foldit:wght@600&family=Pacifico&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Rubik+Mono+One&display=swap"
         rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Foldit:wght@600&family=Kumbh+Sans:wght@100..900&family=Pacifico&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Rubik+Mono+One&display=swap"
+        rel="stylesheet">
 </head>
 
 <body>
-    <header>50:10(minutes) stopwatch
+    <header>
+        <div>
+            <h1>
+                Stopwatch
+            </h1>
+            <div id="live">
+                <div id="userCount">Live Users: 0</div>
+                <img src="images/live.png" width="25">
 
-        <button id="toggle-chat">Hide Chat</button>
+            </div>
+
+        </div>
+        <div>
+            <button id="toggle-chat">Hide 💬</button>
+
+        </div>
+
 
     </header>
     <div class="main-container">
         <div class="container">
             <div class="chat-container">
+
                 <h2>Anonymous Chat</h2>
                 <div id="messageDisplay"></div>
                 <textarea id="message" placeholder="Type your message..."></textarea>
                 <button id="sendBtn">Send</button>
             </div>
-            <div class="stopwatch">
-                <h1 id="title">Working</h1>
-                <h1 id="timer">50:00</h1>
-                <h2>Work Sessions Completed: <span id="counter">0</span></h2>
-                <div id="wall"></div>
-                <button id="startBtn">Start</button>
-                <button id="pauseBtn">Pause</button>
-                <button id="skipBtn">Skip</button>
-                <button id="resetBtn">Reset</button>
-                <audio id="alarmSound" src="alarm.mp3" preload="auto"></audio>
+            <div>
+                <div class="stopwatch">
+
+                    <button id="settingsBtn">⚙️</button> <!-- Settings button -->
+                    <h1 id="title">Working</h1>
+                    <h1 id="timer">50:00</h1>
+                    <h2>Completed: <span id="counter">0</span></h2>
+                    <div id="wall"></div>
+                    <button id="startBtn">Start</button>
+                    <button id="pauseBtn">Pause</button>
+                    <button id="skipBtn">Skip</button>
+                    <button id="resetBtn">Reset</button>
+                    <audio id="alarmSound" src="alarm.mp3" preload="auto"></audio>
+
+                </div>
+
             </div>
+
 
 
             <div class="placeholder"></div>
         </div>
 
+    </div>
+
+    <!-- Settings Modal -->
+    <div id="settingsModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Settings</h2>
+            <form id="settingsForm">
+                <label for="workTimeInput">Work Time (minutes):</label>
+                <input type="number" id="workTimeInput" min="1" max="120" value="50">
+
+                <label for="breakTimeInput">Break Time (minutes):</label>
+                <input type="number" id="breakTimeInput" min="1" max="120" value="10">
+
+                <label for="nicknameInput">Chat Nickname:</label>
+                <input type="text" id="nicknameInput" placeholder="Enter new nickname">
+
+                <label for="goalInput">Today's Session Goal:</label>
+                <input type="number" id="goalInput" min="1" placeholder="Enter session goal">
+
+                <button type="submit">Save Settings</button>
+            </form>
+        </div>
     </div>
     <script src="script.js"></script>
 </body>

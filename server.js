@@ -4,6 +4,9 @@ const fs = require('fs');
 const path = require('path');
 const WebSocket = require('ws');
 
+// Track connected clients
+let clients = [];
+
 const app = express();
 const PORT = 3000;
 
@@ -69,12 +72,35 @@ app.server = app.listen(PORT, () => {
     // console.log(`Server is running on http://localhost:${PORT}`);
 });
 
-wss.on('connection', (ws) => {
-    console.log('WebSocket connection established');
-});
 
 app.server.on('upgrade', (request, socket, head) => {
     wss.handleUpgrade(request, socket, head, (ws) => {
         wss.emit('connection', ws, request);
+    });
+});
+
+const broadcastUserCount = () => {
+    const userCount = clients.length;
+    const message = JSON.stringify({ type: 'userCount', count: userCount });
+    clients.forEach(client => {
+        if (client.readyState === WebSocket.OPEN) {
+            client.send(message);
+        }
+    });
+};
+
+wss.on('connection', (ws) => {
+    // Add new client to the list
+    clients.push(ws);
+
+    // Send the updated user count
+    broadcastUserCount();
+
+    ws.on('close', () => {
+        // Remove the client from the list when disconnected
+        clients = clients.filter(client => client !== ws);
+
+        // Send the updated user count
+        broadcastUserCount();
     });
 });

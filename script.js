@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const wallElement = document.getElementById('wall');
     const titleElement = document.getElementById('title');
     const headTitleElement = document.getElementById('headTitle');
+    const userCountElement = document.getElementById('userCount');
 
     const stopwatchDiv = document.querySelector('.stopwatch');
 
@@ -19,19 +20,89 @@ document.addEventListener('DOMContentLoaded', () => {
     const sendBtn = document.getElementById('sendBtn');
     const messageElement = document.getElementById('message');
 
-    let workTime = 50 * 60; // 50 minutes in seconds
-    let breakTime = 10 * 60; // 10 minutes in seconds
+
+    const settingsBtn = document.getElementById('settingsBtn');
+    const settingsModal = document.getElementById('settingsModal');
+    const closeModalBtn = document.querySelector('.close');
+    const settingsForm = document.getElementById('settingsForm');
+
+    const workTimeInput = document.getElementById('workTimeInput');
+    const breakTimeInput = document.getElementById('breakTimeInput');
+    const nicknameInput = document.getElementById('nicknameInput');
+    const goalInput = document.getElementById('goalInput');
+
+    let workTime = (localStorage.getItem('workTime') ?? 50) * 60; // 50 minutes in seconds
+    let breakTime = (localStorage.getItem('breakTime') ?? 10) * 60; // 10 minutes in seconds
     let timeLeft = workTime;
     let isRunning = false;
     let interval;
     let cycleCounter = 0;
     let isBreak = false;
+    let goal = localStorage.getItem('sessionGoal') ?? 8;
+
+    counterElement.textContent = `${cycleCounter.toString()}/${goal}`;
     // List of random usernames
     const usernames = [
         'AnonymousEagle', 'MysteriousCat', 'SilentWolf', 'HiddenShadow', 'CleverFox',
         'SneakyNinja', 'MaskedOwl', 'InvisibleTiger', 'ShadowDragon', 'GhostRaven'
     ];
 
+
+    // Open settings modal
+    settingsBtn.addEventListener('click', () => {
+        settingsModal.style.display = 'flex';
+        goalInput.value = goal;
+        nicknameInput.value = localStorage.getItem('anonymousUsername');
+    });
+
+    // Close settings modal
+    closeModalBtn.addEventListener('click', () => {
+        settingsModal.style.display = 'none';
+    });
+
+    settingsForm.addEventListener('submit', (event) => {
+        event.preventDefault();
+        workTime = parseInt(workTimeInput.value) * 60;
+        breakTime = parseInt(breakTimeInput.value) * 60;
+        const newNickname = nicknameInput.value.trim();
+        const sessionGoal = parseInt(goalInput.value);
+
+        if (newNickname) {
+            localStorage.setItem('anonymousUsername', newNickname);
+        }
+
+        if (sessionGoal) {
+            // You can store the session goal in local storage or use it in your app logic
+            localStorage.setItem('sessionGoal', sessionGoal);
+            goal = sessionGoal
+            counterElement.textContent = `${cycleCounter.toString()}/${goal}`;
+
+        }
+
+        if (workTimeInput.value) {
+            localStorage.setItem('workTime', workTimeInput.value);
+            workTime = workTimeInput.value * 60;
+        }
+
+        if (breakTimeInput.value) {
+            localStorage.setItem('breakTime', breakTimeInput.value);
+            breakTime = breakTimeInput.value * 60;
+        }
+
+        // Update the timer display immediately
+        timeLeft = isBreak ? breakTime : workTime;
+        updateTimerDisplay();
+
+        // Close modal
+        settingsModal.style.display = 'none';
+    });
+
+    // Close modal if clicked outside of the modal content
+    window.addEventListener('click', (event) => {
+        if (event.target === settingsModal) {
+            settingsModal.style.display = 'none';
+        }
+    });
     // Function to get or generate a random username
     const getUsername = () => {
         let username = localStorage.getItem('anonymousUsername');
@@ -76,7 +147,7 @@ document.addEventListener('DOMContentLoaded', () => {
             addWorkSessionToWall();
             cycleCounter++;
 
-            counterElement.textContent = cycleCounter.toString();
+            counterElement.textContent = `${cycleCounter.toString()}/${goal}`;
         }
     };
 
@@ -100,7 +171,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         cycleCounter++;
                         addWorkSessionToWall();
                     } else {
-                        counterElement.textContent = cycleCounter.toString();
+                        counterElement.textContent = `${cycleCounter.toString()}/${goal}`;
 
                         timeLeft = workTime;
 
@@ -125,7 +196,7 @@ document.addEventListener('DOMContentLoaded', () => {
         timeLeft = workTime;
         cycleCounter = 0;
         updateTimerDisplay();
-        counterElement.textContent = cycleCounter.toString();
+        counterElement.textContent = `${cycleCounter.toString()}/${goal}`;
 
         wallElement.textContent = ''; // Clear the wall
     };
@@ -141,7 +212,6 @@ document.addEventListener('DOMContentLoaded', () => {
         fetch('/messages')
             .then(response => response.text())
             .then(data => {
-                console.log(data)
                 const messages = data.split('\n').filter(message => message.trim() !== '');
                 messageDisplay.innerHTML = messages.map(msg => `<div class="message">${msg}</div>`).join('');
                 messageDisplay.scrollTop = messageDisplay.scrollHeight; // Scroll to bottom
@@ -191,19 +261,21 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
 
-    // const ws = new WebSocket('ws://localhost:3000');
+    const ws = new WebSocket('ws://localhost:3000');
 
-    const ws = new WebSocket('wss://stopwatch.tomislavkovacevic.com');
-    
-    ws.onopen = () => {
-        console.log('WebSocket connection established');
-    };
+    // const ws = new WebSocket('wss://stopwatch.tomislavkovacevic.com');
+
     // Handle incoming messages
     ws.onmessage = (event) => {
-        console.log(event)
-        const messagesContainer = document.getElementById('messages-container');
-        messageDisplay.innerHTML += `<div class="message">${event.data}</div>`; // Append new message
-        messageDisplay.scrollTop = messageDisplay.scrollHeight; // Auto-scroll to bottom
+        const message = JSON.parse(event.data);
+        if (message.type === 'userCount') {
+            userCountElement.textContent = `Live Users: ${message.count}`;
+        }
+        else {
+            const messagesContainer = document.getElementById('messages-container');
+            messageDisplay.innerHTML += `<div class="message">${event.data}</div>`; // Append new message
+            messageDisplay.scrollTop = messageDisplay.scrollHeight; // Auto-scroll to bottom
+        }
     };
 
     // Optional: Handle WebSocket errors
@@ -213,7 +285,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Optional: Handle WebSocket close
     ws.onclose = () => {
-        console.log('WebSocket connection closed');
     };
 
     // Toggle chat visibility
@@ -223,7 +294,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const placeholder = document.getElementsByClassName('placeholder')[0];
 
     toggleChatButton.addEventListener('click', () => {
-        console.log("cick")
         if (chatContainer.classList.contains('hidden')) {
             chatContainer.classList.remove('hidden');
             placeholder.classList.remove('hidden');
@@ -231,7 +301,7 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             chatContainer.classList.add('hidden');
             placeholder.classList.add('hidden');
-            toggleChatButton.textContent = 'Show Chat';
+            toggleChatButton.textContent = 'Show 💬';
         }
     });
 })
