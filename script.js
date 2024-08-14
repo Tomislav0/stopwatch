@@ -72,10 +72,10 @@ document.addEventListener('DOMContentLoaded', () => {
             timeLeft = breakTime;
             isBreak = true;
             titleElement.textContent = "Break"
-
+            
             addWorkSessionToWall();
             cycleCounter++;
-
+            
             counterElement.textContent = cycleCounter.toString();
         }
     };
@@ -86,7 +86,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // stopwatchDiv.classList.add('ticking');
             // stopwatchDiv.style.setProperty('--total-time', `${workTime}s`);
-
+            
             interval = setInterval(() => {
                 timeLeft--;
                 updateTimerDisplay();
@@ -108,9 +108,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
                         titleElement.textContent = "Working"
                     }
-                }
+                } 
                 // stopwatchDiv.style.setProperty('--total-time', `${timeLeft}s`); // Update animation duration
-
+                
             }, 1000);
         }
     };
@@ -192,9 +192,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     // const ws = new WebSocket('ws://localhost:3000');
-
-    const ws = new WebSocket('wss://stopwatch-g8bh.onrender.com');
-
+    
+    const ws = new WebSocket('ws://stopwatch.tomislavkovacevic.com');
     ws.onopen = () => {
         console.log('WebSocket connection established');
     };
@@ -219,7 +218,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Toggle chat visibility
     const toggleChatButton = document.getElementById('toggle-chat');
     const chatContainer = document.getElementsByClassName('chat-container')[0];
-
+    
     const placeholder = document.getElementsByClassName('placeholder')[0];
 
     toggleChatButton.addEventListener('click', () => {
