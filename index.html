@@ -1,26 +1,54 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title id="headTitle">Stopwatch</title>
     <link rel="icon" href="duck.png" type="image/x-icon"> <!-- Link to favicon -->
     <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Pacifico&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+        rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Foldit:wght@600&family=Pacifico&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Rubik+Mono+One&display=swap"
+        rel="stylesheet">
 </head>
+
 <body>
-    <h2 style="position: absolute; top: 40px;">50:10(minutes) stopwatch</h2>
-    
-    <div class="stopwatch">
-        <h1 id="title">Working</h1>
-        <h1 id="timer">50:00</h1>
-        <h2>Work Sessions Completed: <span id="counter">0</span></h2> 
-        <div id="wall"></div>
-        <button id="startBtn">Start</button>
-        <button id="pauseBtn">Pause</button>
-        <button id="skipBtn">Skip</button>
-        <button id="resetBtn">Reset</button>
-        <audio id="alarmSound" src="alarm.mp3" preload="auto"></audio>
+    <header>50:10(minutes) stopwatch
+
+        <button id="toggle-chat">Hide Chat</button>
+
+    </header>
+    <div class="main-container">
+        <div class="container">
+            <div class="chat-container">
+                <h2>Anonymous Chat</h2>
+                <div id="messageDisplay"></div>
+                <textarea id="message" placeholder="Type your message..."></textarea>
+                <button id="sendBtn">Send</button>
+            </div>
+            <div class="stopwatch">
+                <h1 id="title">Working</h1>
+                <h1 id="timer">50:00</h1>
+                <h2>Work Sessions Completed: <span id="counter">0</span></h2>
+                <div id="wall"></div>
+                <button id="startBtn">Start</button>
+                <button id="pauseBtn">Pause</button>
+                <button id="skipBtn">Skip</button>
+                <button id="resetBtn">Reset</button>
+                <audio id="alarmSound" src="alarm.mp3" preload="auto"></audio>
+            </div>
+
+
+            <div class="placeholder"></div>
+        </div>
+
     </div>
     <script src="script.js"></script>
 </body>
+
 </html>

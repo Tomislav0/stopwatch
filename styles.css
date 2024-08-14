@@ -1,12 +1,32 @@
 body {
-    font-family: Arial, sans-serif;
+
+    background-color: #f4f4f4;
+
+    font-family: "Roboto", sans-serif;
+    height: 100vh
+}
+
+.main-container {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
-    background-color: #f4f4f4;
     margin: 0;
     flex-direction: column;
+    height: 80%;
+}
+
+header {
+    font-family: "Rubik Mono One", monospace;
+    font-weight: 400;
+    font-style: normal;
+    text-align: center;
+}
+
+footer {
+    background-color: #f4f4f4;
+    position: absolute;
+    height: 50px;
+
 }
 
 .stopwatch {
@@ -15,8 +35,28 @@ body {
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    height: fit-content;
+    margin: auto 0;
+/* 
+    border-radius: 50%;
+    border: 10px solid transparent;
+    border-top-color: blue; */
 }
 
+@keyframes border-tick {
+    0% {
+        border-image: linear-gradient(0deg, #007bff, #007bff) 1; /* Full border */
+    }
+    100% {
+        border-image: linear-gradient(0deg, transparent, transparent) 1; /* Border disappears */
+    }
+}
+
+/* Apply the animation */
+.stopwatch.ticking {
+    animation: border-tick var(--total-time) linear forwards;
+    border-width: 5px; /* Ensure the border width remains consistent */
+}
 #timer {
     font-size: 4rem;
     margin-bottom: 20px;
@@ -58,4 +98,114 @@ button {
 #wall {
     font-size: 2rem;
     margin-bottom: 20px;
+}
+
+.chat-container {
+    text-align: center;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 300px;
+}
+
+textarea {
+    width: 90%;
+    height: 100px;
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+#messageDisplay {
+    max-height: 200px;
+    overflow-y: auto;
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: #f9f9f9;
+}
+
+#messageDisplay p {
+    margin: 5px 0;
+    padding: 5px;
+    border-bottom: 1px solid #ddd;
+}
+
+.timestamp {
+    font-size: 0.8em;
+    color: #888;
+    text-align: right;
+}
+
+.message {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.message-username {
+    font-weight: 600;
+    font-size: 0.7em;
+}
+
+.message-text {
+    font-style: italic;
+
+    font-size: 0.8em;
+}
+
+div.message {
+    margin-bottom: 1px;
+    /* Space below each message */
+    padding: 1px;
+    /* Space inside each message */
+    border-bottom: 1px solid #ddd;
+    /* Light grey line between messages */
+    /* Optional: Add padding or background color if needed */
+    background-color: #f9f9f9;
+    /* Light background color for better visibility */
+}
+
+/* Remove the bottom border for the last message */
+div.message:last-child {
+    border-bottom: none;
+}
+
+.container {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+}
+
+.placeholder {
+    width: 340px;
+}
+
+.hidden {
+    display: none;
+}
+
+@media (max-width: 1000px) {
+    .container {
+        flex-direction: column-reverse;
+        width: unset;
+    }
+
+    .chat-container {
+        margin: 0 auto;
+        margin-top: 20px;
+    }
+
+    .placeholder {
+        display: none;
+    }
+    body{
+        
+    height: unset;
+    }
+    .main-container{
+        margin-top: 50px;
+    }
 }
