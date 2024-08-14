@@ -193,8 +193,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // const ws = new WebSocket('ws://localhost:3000');
 
-    const ws = new WebSocket('wss://stopwatch.tomislavkovacevic.com');
-    
+    const ws = new WebSocket('wss://stopwatch-g8bh.onrender.com');
+
     ws.onopen = () => {
         console.log('WebSocket connection established');
     };
