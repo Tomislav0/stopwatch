@@ -267,8 +267,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Handle incoming messages
     ws.onmessage = (event) => {
-        const message = JSON.parse(event.data);
-        if (message.type === 'userCount') {
+        const message = JSON.parse(event.data) ?? null;
+        if (message != null && message.type === 'userCount') {
             userCountElement.textContent = `Live Users: ${message.count}`;
         }
         else {
