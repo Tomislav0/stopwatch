@@ -264,10 +264,17 @@ document.addEventListener('DOMContentLoaded', () => {
     // const ws = new WebSocket('ws://localhost:3000');
 
     const ws = new WebSocket('wss://stopwatch.tomislavkovacevic.com');
-
+    function isJsonString(str) {
+        try {
+            JSON.parse(str);
+        } catch (e) {
+            return false;
+        }
+        return true;
+    }
     // Handle incoming messages
     ws.onmessage = (event) => {
-        const message = JSON.parse(event.data) ?? null;
+        const message = isJsonString(event.data) ? JSON.parse(event.data) : null;
         if (message != null && message.type === 'userCount') {
             userCountElement.textContent = `Live Users: ${message.count}`;
         }
