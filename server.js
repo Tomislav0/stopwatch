@@ -4,6 +4,10 @@ const fs = require('fs');
 const path = require('path');
 const WebSocket = require('ws');
 
+
+const nodemailer = require('nodemailer');
+const cors = require('cors');
+
 // Track connected clients
 let clients = [];
 
@@ -14,6 +18,20 @@ const wss = new WebSocket.Server({ noServer: true });
 // Middleware to parse JSON bodies
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname)));
+
+const origins = process.env.CORS_ORIGINS.split(';');
+app.use(cors({
+    origin: function (origin, callback) {
+        if (!origin || origins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
+    methods: ['GET', 'POST'],
+    credentials: true,
+}));
+require('dotenv').config();
 
 // Serve the HTML file
 app.get('/', (req, res) => {
@@ -40,7 +58,7 @@ const formatDateTime = () => {
     const day = String(now.getDate()).padStart(2, '0');
     const month = String(now.getMonth() + 1).padStart(2, '0'); // Months are zero-indexed
     const year = now.getFullYear();
-    
+
     return `${hours}:${minutes}, ${day}.${month}.${year}`;
 };
 
@@ -55,21 +73,55 @@ app.post('/send-message', (req, res) => {
         if (err) {
             console.error('Failed to save message:', err);
             res.status(500).send('Failed to save message.');
-        } else { 
+        } else {
             wss.clients.forEach(client => {
-            if (client.readyState === WebSocket.OPEN) {
-                client.send(formattedMessage);
-            }
-        });
-        res.status(200).send('Message saved.');
+                if (client.readyState === WebSocket.OPEN) {
+                    client.send(formattedMessage);
+                }
+            });
+            res.status(200).send('Message saved.');
         }
     });
 });
 
+app.post('/send-email', async (req, res) => {
+    const { name, email, message } = req.body;
+
+    if (!name || !email || !message) {
+        return res.status(400).send({ error: 'All fields are required.' });
+    }
+
+    const transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+            user: process.env.EMAIL_USER,
+            pass: process.env.EMAIL_PASS,
+        },
+    });
+
+    const mailOptions = {
+        from: process.env.EMAIL_USER,
+        to: process.env.EMAIL_USER,
+        subject: `NOVA PORUKA SA STRANICE OD ${name}`,
+        text: `Name: ${name}\n
+        Email: ${email}\n
+        Message:\n ${message}`,
+    };
+
+    try {
+        await transporter.sendMail(mailOptions);
+        res.status(200).send({ success: 'Email sent successfully!' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send({ error: 'Failed to send email.' });
+    }
+});
+
+
 
 // Handle WebSocket connections
 app.server = app.listen(PORT, () => {
-    // console.log(`Server is running on http://localhost:${PORT}`);
+    console.log(`Server is running on http://localhost:${PORT}`);
 });
 
 
