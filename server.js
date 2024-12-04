@@ -19,6 +19,7 @@ const wss = new WebSocket.Server({ noServer: true });
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname)));
 
+require('dotenv').config();
 const origins = process.env.CORS_ORIGINS.split(';');
 app.use(cors({
     origin: function (origin, callback) {
@@ -31,7 +32,6 @@ app.use(cors({
     methods: ['GET', 'POST'],
     credentials: true,
 }));
-require('dotenv').config();
 
 // Serve the HTML file
 app.get('/', (req, res) => {
@@ -85,6 +85,18 @@ app.post('/send-message', (req, res) => {
 });
 
 app.post('/send-email', async (req, res) => {
+
+    const reCaptchaParams = new URLSearchParams({
+        secret: process.env.RECAPTCHA_SECRET,
+        response: req.body.gRecaptchaResponse,
+    });
+    const captchaResponse = await fetch('https://www.google.com/recaptcha/api/siteverify',
+        { method: 'POST', body: reCaptchaParams })
+        .then(res => res.json());
+
+    if (!captchaResponse.success) {
+        return res.status(400).send({ error: 'Failed to verify reCAPTCHA.' });
+    }
     const { name, email, message } = req.body;
 
     if (!name || !email || !message) {

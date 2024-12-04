@@ -1,0 +1,33 @@
+# Node.js dependencies
+node_modules/
+
+# Logs
+logs/
+*.log
+
+# Environment files
+.env
+
+# VS Code settings folder
+.vscode/
+
+# MacOS system files
+.DS_Store
+
+# Windows system files
+Thumbs.db
+
+# Other build files (optional depending on the project)
+dist/
+build/
+
+# Optional: Test coverage reports
+coverage/
+
+# Optional: Dependency directories (for some frameworks)
+bower_components/
+jspm_packages/
+
+# Optional: Package lock files (in some cases you might want to commit them, depending on your workflow)
+package-lock.json
+yarn.lock
